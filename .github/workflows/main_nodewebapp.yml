@@ -33,10 +33,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'NodeWebApp'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+      - name: Zip artifact for deployment
+        run: zip -r app.zip .
+      - name: Deploy via Kudu Zip Deploy API
+        run: |
+          curl -X POST -u '${{ secrets.AZURE_WEBAPP_USERNAME }}:${{ secrets.AZURE_WEBAPP_PASSWORD }}' \
+            --data-binary @app.zip \
+            "https://nodewebapp-eagzawhqachzbccx.scm.centralindia-01.azurewebsites.net/api/zipdeploy"
