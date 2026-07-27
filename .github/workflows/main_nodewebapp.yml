@@ -37,6 +37,6 @@ jobs:
         run: zip -r app.zip .
       - name: Deploy via Kudu Zip Deploy API
         run: |
-          curl -X POST -u '${{ secrets.AZURE_WEBAPP_USERNAME }}:${{ secrets.AZURE_WEBAPP_PASSWORD }}' \
+          curl -f -sS -X POST -u '${{ secrets.AZURE_WEBAPP_USERNAME }}:${{ secrets.AZURE_WEBAPP_PASSWORD }}' \
             --data-binary @app.zip \
             "https://nodewebapp-eagzawhqachzbccx.scm.centralindia-01.azurewebsites.net/api/zipdeploy"
